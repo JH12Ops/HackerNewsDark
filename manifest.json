@@ -4,7 +4,7 @@
    },
    "content_scripts": [ {
       "css": [ "css/style.css" ],
-      "js": [ "js/jquery.min.3.7.1.js", "js/main.js" ],
+      "js": [ "js/main.js" ],
       "matches": [ "*://news.ycombinator.com/*" ],
       "run_at": "document_idle"
    } ],
