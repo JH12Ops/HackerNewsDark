@@ -69,10 +69,10 @@ const htmlHeader = `
     <a href="new">New</a>
   </div>
   <div>
-    <a href="past">Past</a>
+    <a href="front">Past</a>
   </div>
   <div>
-    <a href="comments">Comments</a>
+    <a href="newcomments">Comments</a>
   </div>
   <div>
     <a href="ask">Ask</a>
