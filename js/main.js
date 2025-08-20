@@ -1,4 +1,3 @@
-// set class name for current page (default:home) and reset as needed
 const bodyClasses = document.body.classList;
 const location = document.location.href;
 
@@ -9,12 +8,10 @@ if (location.indexOf('item') > -1) {
   bodyClasses.remove("home-page");
 
   const newOpLink = document.querySelector(".subtext a[href^='user?']");
-  const newOps = document.querySelector("a[href='"
-      + newOpLink.attributes.href.value
-      + "'")
+  const newOps = document.querySelector(`a[href='${newOpLink.attributes.href.value}'`)
 
   newOps.classList.add("op")
-  newOps.text = newOpLink.text + " [OP]"
+  newOps.text = `${newOpLink.text} [OP]`
 
 }
 if (location.indexOf('reply') > -1) {
@@ -41,7 +38,7 @@ if (location.indexOf('jobs') > -1) {
 // set loaded class so we know when to fade in content
 bodyClasses.add("page-loaded")
 
-// set link to news
+// create link to active
 const activeLink = document.createElement("a");
 activeLink.setAttribute("href", "active");
 activeLink.text = "Active"
@@ -50,6 +47,7 @@ activeLink.text = "Active"
 const hnname = document.querySelector('.hnname')
 hnname.after(activeLink)
 
+//Hide default nav bar
 document.querySelector("#hnmain > tbody:nth-child(1) > tr:nth-child(1)").hidden = true;
 
 const loggedIn = document.querySelector("#me");
@@ -60,7 +58,7 @@ const logoutUrl = loggedIn
 
 
 const htmlHeader = `
-<div class="headerBar">
+<div class="headerBar hnbar">
   <div class="titleItem">
     <a href="news">Hacker News</a>
   </div>
@@ -94,16 +92,34 @@ const htmlHeader = `
     </div>
     <div>
       <a href=${logoutUrl}>Logout</a>
-    </div>
-`
+    </div>`
     :`<div>
       <a href="login?goto=news">Login</a>
-    </div>`
-}
-</div>
-`
-const newHeader = new DOMParser().parseFromString(htmlHeader, "text/html").body.children[0];
+    </div>`}
+</div>`
 
-const center = document.querySelector("body > center:nth-child(1)")
-center.firstChild.before(newHeader)
+const borderColors = ["red", "green", "blue", "yellow", "purple"];
+
+if(document.querySelector(".hnbar") == null) {
+
+  const newHeader = new DOMParser().parseFromString(htmlHeader, "text/html").body.children[0];
+  document.querySelector("body > center:nth-child(1)").firstChild.before(newHeader)
+
+
+  if(document.documentURI.endsWith("news")) {
+    document.querySelectorAll("body > center > table > tbody > tr:nth-child(n + 2) > td > table tr:nth-child(3n + 2) td")
+        .forEach(i => i.classList.add("hnHomepage"))
+  }
+
+  else if(document.documentURI.includes("item")) {
+    document.querySelectorAll("td[indent]")
+        .forEach(i => {
+          const indent = Number(i.attributes["indent"].value);
+          if (indent != null) {
+            i.parentElement.style.marginBottom = "1rem"
+            i.style.borderRight = `3px solid ${borderColors[indent % borderColors.length]}`;
+          }
+        });
+  }
+}
 
