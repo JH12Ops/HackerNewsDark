@@ -2,7 +2,7 @@
    "manifest_version": 3,
    "name": "HackerNewsDark",
    "description": "A nice, readable, dark theme for Hacker News.",
-   "version": "0.11.0",
+   "version": "0.11.1",
    "icons": {
       "128": "icons/128.png",
       "16": "icons/16.png",
