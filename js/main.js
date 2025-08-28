@@ -14,22 +14,27 @@ if (location.indexOf('item') > -1) {
   newOps.text = `${newOpLink.text} [OP]`
 
 }
+
 if (location.indexOf('reply') > -1) {
   bodyClasses.add("post-page")
   bodyClasses.remove("home-page");
 }
+
 if (location.indexOf('newcomments') > -1) {
   bodyClasses.add("comment-page")
   bodyClasses.remove("home-page");
 }
+
 if (location.indexOf('threads') > -1) {
   bodyClasses.add("threads-page")
   bodyClasses.remove("home-page");
 }
+
 if (location.indexOf('ask') > -1) {
   bodyClasses.add("ask-page")
   bodyClasses.remove("home-page");
 }
+
 if (location.indexOf('jobs') > -1) {
   bodyClasses.add("jobs-page")
   bodyClasses.remove("home-page");
@@ -44,7 +49,7 @@ activeLink.setAttribute("href", "active");
 activeLink.text = "Active"
 
 
-const hnname = document.querySelector('.hnname')
+const hnname = document.querySelector(".hnname")
 hnname.after(activeLink)
 
 //Hide default nav bar
@@ -56,55 +61,62 @@ const logoutUrl = loggedIn
     ? document.querySelector("#logout").attributes.href.value
     : "";
 
-
 const htmlHeader = `
 <div class="headerBar hnbar">
-  <div class="titleItem">
+  <div class="titleItem orange">
     <a href="news">Hacker News</a>
   </div>
-  <div>
+  <div class="titleItem">
     <a href="active">Active</a>
   </div>
-  <div>
+  <div class="titleItem">
     <a href="new">New</a>
   </div>
-  <div>
+  <div class="titleItem">
     <a href="front">Past</a>
   </div>
-  <div>
+  <div class="titleItem">
     <a href="newcomments">Comments</a>
   </div>
-  <div>
+  <div class="titleItem">
     <a href="ask">Ask</a>
   </div>
-  <div>
+  <div class="titleItem">
     <a href="show">Show</a>
   </div>
-  <div>
+  <div class="titleItem">
     <a href="jobs">Jobs</a>
   </div>
-  <div>
+  <div class="titleItem">
     <a href="submit">Submit</a>
   </div>
   ${loggedIn ? `
-    <div>
+    <div class="titleItem">
       <a href=${loggedIn.attributes.href.value}>${loggedIn.outerText}</a>
     </div>
-    <div>
+    <div class="titleItem">
       <a href=${logoutUrl}>Logout</a>
     </div>`
-    :`<div>
+    :`<div class="titleItem">
       <a href="login?goto=news">Login</a>
     </div>`}
 </div>`
 
-const borderColors = ["red", "green", "blue", "yellow", "purple"];
+const borderColors = [
+  "DeepSkyBlue",
+  "Lime",
+  "Fuchsia",
+  "Gold",
+  "Crimson",
+  "MediumVioletRed",
+  "OrangeRed",
+  "Indigo"
+]
 
 if(document.querySelector(".hnbar") == null) {
 
   const newHeader = new DOMParser().parseFromString(htmlHeader, "text/html").body.children[0];
   document.querySelector("body > center:nth-child(1)").firstChild.before(newHeader)
-
 
   if(document.documentURI.endsWith("news")) {
     document.querySelectorAll("body > center > table > tbody > tr:nth-child(n + 2) > td > table tr:nth-child(3n + 2) td")
@@ -117,7 +129,7 @@ if(document.querySelector(".hnbar") == null) {
           const indent = Number(i.attributes["indent"].value);
           if (indent != null) {
             i.parentElement.style.marginBottom = "1rem"
-            i.style.borderRight = `3px solid ${borderColors[indent % borderColors.length]}`;
+            i.style.borderRight = `5px solid ${borderColors[indent % borderColors.length]}`;
           }
         });
   }

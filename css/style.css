@@ -250,23 +250,19 @@ body pre {
     padding: 10px 0;
 }
 
-@media (min-width: 1000px) {
-    .headerBar {
-        width: 85%;
-    }
-}
-
 .headerBar {
+    width: 80%;
     background-color: #282a2e;
     position: sticky;
     top: 0;
     display: flex;
     justify-content: space-between;
     align-items: stretch;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .headerBar > div {
-    padding: 1rem;
     color: #c5c8c6;
 }
 
@@ -278,8 +274,16 @@ body pre {
     color: #c5c8c6;
 }
 
-.titleItem {
+.orange {
     background-color: #ee6218;
+}
+
+.titleItem {
     height: 100%;
+}
+
+.titleItem > a {
+    display: inline-block;
+    padding: 10px;
 }
 
