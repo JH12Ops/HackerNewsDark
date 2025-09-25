@@ -70,7 +70,7 @@ const htmlHeader = `
     <a href="active">Active</a>
   </div>
   <div class="titleItem">
-    <a href="new">New</a>
+    <a href="newest">New</a>
   </div>
   <div class="titleItem">
     <a href="front">Past</a>
