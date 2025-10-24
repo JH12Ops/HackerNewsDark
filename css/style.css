@@ -1,3 +1,7 @@
+:root {
+    --large-font-size: 20pt;
+}
+
 body {
     margin: 0;
     color: #c5c8c6;
@@ -250,16 +254,53 @@ body pre {
     padding: 10px 0;
 }
 
+.headerContainer {
+    top:0;
+    position: sticky;
+    background: #1b1c1e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+}
+
 .headerBar {
     width: 80%;
     background-color: #282a2e;
-    position: sticky;
-    top: 0;
     display: flex;
     justify-content: space-between;
     align-items: stretch;
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.postTitleContainer {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-items: stretch;
+    justify-content: space-evenly;
+    text-wrap: nowrap;
+    gap: 1rem;
+    padding: 10px;
+    text-align: center;
+}
+
+.mainPostTitle {
+    font-size: var(--large-font-size);
+}
+
+
+.postTitle {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.headerContainer::after {
+    content: "";
+    width: 80%;
+    border-bottom: 4px solid #4f4f4f;
 }
 
 .headerBar > div {
@@ -274,8 +315,48 @@ body pre {
     color: #c5c8c6;
 }
 
+@media (max-width: 850px) {
+    .headerContainer {
+        position: initial;
+    }
+
+    .headerBar {
+        flex-wrap: wrap;
+        width: 100%;
+
+    }
+
+    .postTitleContainer {
+        flex-wrap: wrap;
+        width: 100%;
+
+    }
+
+    .mainPostTitle {
+        --large-font-size: 14pt;
+    }
+
+    .postTitle {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+}
+
 .orange {
     background-color: #ee6218;
+}
+
+.orangeText,
+.orangeText > a > span {
+    color: #ee6218;
+}
+
+.yellowText {
+    color: #b4bc67;
+}
+
+.greyText {
+    color: #8e9390;
 }
 
 .titleItem {
@@ -285,5 +366,17 @@ body pre {
 .titleItem > a {
     display: inline-block;
     padding: 10px;
+}
+
+.smallText {
+    font-size: 12px;
+}
+
+.upvotePost {
+    background-color: #515151;
+    border: none;
+    border-radius: 3px;
+    color: #8e9390;
+    cursor: pointer;
 }
 
