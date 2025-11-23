@@ -1,55 +1,75 @@
-const bodyClasses = document.body.classList;
-const location = document.location.href;
+async function injectCSS() {
+    let css = await getCss();
+    let a = document.createElement('a');
+    let inner = `s.innerHTML=\`${css}\``;
 
-bodyClasses.add("home-page");
+    a.setAttribute('style', 'display: none !important;');
+    a.setAttribute('onclick', `(function() { let s = document.createElement('style');s.setAttribute('data-isl', 'injected-style');${inner};document.querySelector('head').appendChild(s); })();`);
 
-if (location.indexOf('reply') > -1) {
-  bodyClasses.add("post-page")
-  bodyClasses.remove("home-page");
+    document.querySelector('head').appendChild(a);
+
+    a.click();
+    a.remove();
 }
 
-if (location.indexOf('newcomments') > -1) {
-  bodyClasses.add("comment-page")
-  bodyClasses.remove("home-page");
+async function getCss() {
+    const url = chrome.runtime.getURL('css/style.css');
+    const response = await fetch(url);
+    return await response.text();
 }
 
-if (location.indexOf('threads') > -1) {
-  bodyClasses.add("threads-page")
-  bodyClasses.remove("home-page");
-}
+function main() {
+    const bodyClasses = document.body.classList;
+    const location = document.location.href;
 
-if (location.indexOf('ask') > -1) {
-  bodyClasses.add("ask-page")
-  bodyClasses.remove("home-page");
-}
+    bodyClasses.add("home-page");
 
-if (location.indexOf('jobs') > -1) {
-  bodyClasses.add("jobs-page")
-  bodyClasses.remove("home-page");
-}
+    if (location.indexOf('reply') > -1) {
+        bodyClasses.add("post-page")
+        bodyClasses.remove("home-page");
+    }
+
+    if (location.indexOf('newcomments') > -1) {
+        bodyClasses.add("comment-page")
+        bodyClasses.remove("home-page");
+    }
+
+    if (location.indexOf('threads') > -1) {
+        bodyClasses.add("threads-page")
+        bodyClasses.remove("home-page");
+    }
+
+    if (location.indexOf('ask') > -1) {
+        bodyClasses.add("ask-page")
+        bodyClasses.remove("home-page");
+    }
+
+    if (location.indexOf('jobs') > -1) {
+        bodyClasses.add("jobs-page")
+        bodyClasses.remove("home-page");
+    }
 
 // set loaded class so we know when to fade in content
-bodyClasses.add("page-loaded")
+    bodyClasses.add("page-loaded")
 
 // create link to active
-const activeLink = document.createElement("a");
-activeLink.setAttribute("href", "active");
-activeLink.text = "Active"
+    const activeLink = document.createElement("a");
+    activeLink.setAttribute("href", "active");
+    activeLink.text = "Active"
 
-
-const hnname = document.querySelector(".hnname")
-hnname.after(activeLink)
+    const hnname = document.querySelector(".hnname")
+    hnname.after(activeLink)
 
 //Hide default nav bar
-document.querySelector("#hnmain > tbody:nth-child(1) > tr:nth-child(1)").hidden = true;
+    document.querySelector("#hnmain > tbody:nth-child(1) > tr:nth-child(1)").hidden = true;
 
-const loggedIn = document.querySelector("#me");
+    const loggedIn = document.querySelector("#me");
 
-const logoutUrl = loggedIn
-    ? document.querySelector("#logout").attributes.href.value
-    : "";
+    const logoutUrl = loggedIn
+        ? document.querySelector("#logout").attributes.href.value
+        : "";
 
-const htmlHeader = `
+    const htmlHeader = `
 <div class="headerContainer">
     <div class="headerBar hnbar">
       <div class="titleItem orange">
@@ -92,44 +112,45 @@ const htmlHeader = `
     </div>
 </div>`
 
-const borderColors = [
-  "DeepSkyBlue",
-  "Lime",
-  "Fuchsia",
-  "Gold",
-  "Crimson",
-  "MediumVioletRed",
-  "OrangeRed",
-  "Indigo"
-]
+    const borderColors = [
+        "DeepSkyBlue",
+        "Lime",
+        "Fuchsia",
+        "Gold",
+        "Crimson",
+        "MediumVioletRed",
+        "OrangeRed",
+        "Indigo"
+    ]
 
-if (document.querySelector(".hnbar") == null) {
+    if (document.querySelector(".hnbar") == null) {
 
-  const newHeader = new DOMParser().parseFromString(htmlHeader, "text/html").body.children[0];
-  document.querySelector("body > center:nth-child(1)").firstChild.before(newHeader)
+        const newHeader = new DOMParser().parseFromString(htmlHeader, "text/html").body.children[0];
+        document.querySelector("body > center:nth-child(1)").firstChild.before(newHeader)
 
-  if (document.documentURI.endsWith("news")) {
-    document.querySelectorAll("body > center > table > tbody > tr:nth-child(n + 2) > td > table tr:nth-child(3n + 2) td")
-        .forEach(i => i.classList.add("hnHomepage"))
-  }
+        if (document.documentURI.endsWith("news")) {
+            document.querySelectorAll("body > center > table > tbody > tr:nth-child(n + 2) > td > table tr:nth-child(3n + 2) td")
+                .forEach(i => i.classList.add("hnHomepage"))
+        }
 
-  else if (document.documentURI.includes("item")) {
-    document.querySelectorAll("td[indent]")
-        .forEach(i => {
-          const indent = Number(i.attributes["indent"].value);
-          if (indent != null) {
-            i.parentElement.style.marginBottom = "1rem"
-            i.style.borderRight = `5px solid ${borderColors[indent % borderColors.length]}`;
-          }
-        });
-  }
+        else if (document.documentURI.includes("item")) {
+            document.querySelectorAll("td[indent]")
+                .forEach(i => {
+                    const indent = Number(i.attributes["indent"].value);
+                    if (indent != null) {
+                        i.parentElement.style.marginBottom = "1rem"
+                        i.style.borderRight = `5px solid ${borderColors[indent % borderColors.length]}`;
+                    }
+                });
+        }
+    }
+
+    if (location.indexOf('item') > -1) {
+        handlePostPage(bodyClasses);
+    }
 }
 
-if (location.indexOf('item') > -1) {
-    handlePostPage();
-}
-
-function handlePostPage() {
+function handlePostPage(bodyClasses) {
     bodyClasses.add("post-page")
     bodyClasses.remove("home-page");
 
@@ -144,30 +165,21 @@ function handlePostPage() {
 
 function affixPostInfo() {
     const postDetailsTable = document.querySelector(".fatitem");
-
     const upVoteLink = postDetailsTable.querySelector(".votelinks a").href;
-
     const titleDetails = postDetailsTable.querySelector(".titleline > a");
     const title = titleDetails.textContent;
     const titleUrl = titleDetails.href;
-
     const sublineDetails = postDetailsTable.querySelector(".subline");
-
     const points = sublineDetails.querySelector(".score").textContent;
-
     const postAuthorDetails = sublineDetails.querySelector(".op");
     const postAuthorName = postAuthorDetails.textContent.split(" ")[0];
     const postAuthorUrl = postAuthorDetails.href;
-
     const postDateString = sublineDetails.querySelector(".age").title;
     const postDate = Number.parseInt(postDateString.split(" ")[1]) * 1000;
     const correctDate = new Date(postDate);
     const dateDiffToNowHours = Math.round((new Date() - correctDate) / 3_600_000);
-
     const age = dateDiffToNowHours > 12 ? correctDate.toDateString() : `${dateDiffToNowHours} hours ago`;
-
     const links = sublineDetails.querySelectorAll("a");
-
     const linksDict = {};
 
     if (links.length >= 3) {
@@ -220,3 +232,5 @@ function affixPostInfo() {
     const postTitleElement = new DOMParser().parseFromString(htmlString, "text/html").body.children[0];
     document.querySelector(".headerContainer").lastChild.after(postTitleElement);
 }
+
+injectCSS().then(() => {main()});
