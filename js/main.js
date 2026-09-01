@@ -1,15 +1,9 @@
 async function injectCSS() {
     let css = await getCss();
-    let a = document.createElement('a');
-    let inner = `s.innerHTML=\`${css}\``;
-
-    a.setAttribute('style', 'display: none !important;');
-    a.setAttribute('onclick', `(function() { let s = document.createElement('style');s.setAttribute('data-isl', 'injected-style');${inner};document.querySelector('head').appendChild(s); })();`);
-
-    document.querySelector('head').appendChild(a);
-
-    a.click();
-    a.remove();
+    let s = document.createElement('style');
+    s.setAttribute('data-isl', 'injected-style');
+    s.textContent = css;
+    document.querySelector('head').appendChild(s);
 }
 
 async function getCss() {
